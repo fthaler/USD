@@ -225,7 +225,7 @@
 #include <boost/variant.hpp>
 #include <boost/vmd/is_empty.hpp>
 #include <boost/vmd/is_tuple.hpp>
-#include <tbb/atomic.h>
+#include <atomic>
 #include <tbb/blocked_range.h>
 #include <tbb/cache_aligned_allocator.h>
 #include <tbb/concurrent_hash_map.h>

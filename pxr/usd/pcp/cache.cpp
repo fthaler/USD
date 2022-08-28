@@ -53,7 +53,7 @@
 #include "pxr/base/tf/envSetting.h"
 #include "pxr/base/tf/registryManager.h"
 
-#include <tbb/atomic.h>
+#include <atomic>
 #include <tbb/concurrent_queue.h>
 #include <tbb/concurrent_vector.h>
 #include <tbb/spin_rw_mutex.h>

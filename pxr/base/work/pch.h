@@ -110,7 +110,7 @@
 #include <boost/type_traits/is_enum.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/utility/enable_if.hpp>
-#include <tbb/atomic.h>
+#include <atomic>
 #include <tbb/blocked_range.h>
 #include <tbb/concurrent_queue.h>
 #include <tbb/concurrent_vector.h>

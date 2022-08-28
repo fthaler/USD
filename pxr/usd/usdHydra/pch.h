@@ -162,7 +162,7 @@
 #include <boost/unordered_map.hpp>
 #include <boost/utility.hpp>
 #include <boost/utility/enable_if.hpp>
-#include <tbb/atomic.h>
+#include <atomic>
 #include <tbb/cache_aligned_allocator.h>
 #include <tbb/concurrent_queue.h>
 #include <tbb/concurrent_unordered_set.h>

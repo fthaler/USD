@@ -194,7 +194,7 @@
 #include <boost/unordered_map.hpp>
 #include <boost/utility.hpp>
 #include <boost/utility/enable_if.hpp>
-#include <tbb/atomic.h>
+#include <atomic>
 #include <tbb/blocked_range.h>
 #include <tbb/cache_aligned_allocator.h>
 #include <tbb/concurrent_hash_map.h>
