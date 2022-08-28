@@ -104,7 +104,7 @@ protected:
     /*
      * Prohibit deletion through a TfRefBase pointer.
      */
-    TF_API virtual ~TfRefBase();
+    TF_API virtual ~TfRefBase() noexcept(false);
 
 private:
     TfRefCount _refCount;

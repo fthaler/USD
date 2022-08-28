@@ -27,6 +27,6 @@
 
 PXR_NAMESPACE_OPEN_SCOPE
 
-PcpDynamicFileFormatInterface::~PcpDynamicFileFormatInterface() = default;
+PcpDynamicFileFormatInterface::~PcpDynamicFileFormatInterface() noexcept(false) = default;
 
 PXR_NAMESPACE_CLOSE_SCOPE

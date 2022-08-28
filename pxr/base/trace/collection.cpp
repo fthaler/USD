@@ -95,6 +95,6 @@ TraceCollection::ReverseIterate(Visitor& visitor) const {
     _Iterate(visitor, true);
 }
 
-TraceCollection::Visitor::~Visitor() {}
+TraceCollection::Visitor::~Visitor() noexcept(false) {}
 
 PXR_NAMESPACE_CLOSE_SCOPE

@@ -49,7 +49,7 @@ class PcpDynamicFileFormatInterface
 public:
     /// Empty virtual destructor to prevent build errors with some compilers.
     PCP_API
-    virtual ~PcpDynamicFileFormatInterface();
+    virtual ~PcpDynamicFileFormatInterface() noexcept(false);
 
     /// Derived classes must implement this function to compose prim fields 
     /// using the given \p context and use them to generate file format 

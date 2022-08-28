@@ -31,7 +31,7 @@ PXR_NAMESPACE_OPEN_SCOPE
 
 TfRefBase::UniqueChangedListener TfRefBase::_uniqueChangedListener;
 
-TfRefBase::~TfRefBase()
+TfRefBase::~TfRefBase() noexcept(false)
 {
 }
 

@@ -83,7 +83,7 @@ public:
     class Visitor {
     public:
         /// Destructor
-        TRACE_API virtual ~Visitor();
+        TRACE_API virtual ~Visitor() noexcept(false);
 
         /// Called at the beginning of an iteration.
         virtual void OnBeginCollection() = 0;
