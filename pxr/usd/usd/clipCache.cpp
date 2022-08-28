@@ -217,9 +217,8 @@ Usd_ClipCache::PopulateClipsForPrim(
 
     const bool primHasClips = !allClips.empty();
     if (primHasClips) {
-        tbb::mutex::scoped_lock lock;
         if (_concurrentPopulationContext) {
-            lock.acquire(_concurrentPopulationContext->_mutex);
+            _concurrentPopulationContext->_mutex.lock();
         }
 
         // Find nearest ancestor with clips specified.
@@ -251,6 +250,10 @@ Usd_ClipCache::PopulateClipsForPrim(
         TF_DEBUG(USD_CLIPS).Msg(
             "Populated clips for prim <%s>\n", 
             path.GetString().c_str());
+
+        if (_concurrentPopulationContext) {
+            _concurrentPopulationContext->_mutex.unlock();
+        }
     }
 
     return primHasClips;
@@ -259,9 +262,8 @@ Usd_ClipCache::PopulateClipsForPrim(
 SdfLayerHandleSet
 Usd_ClipCache::GetUsedLayers() const
 {
-    tbb::mutex::scoped_lock lock;
     if (_concurrentPopulationContext) {
-        lock.acquire(_concurrentPopulationContext->_mutex);
+        _concurrentPopulationContext->_mutex.lock();
     }
     SdfLayerHandleSet layers;
     for (_ClipTable::iterator::value_type const &clipsListIter : _table){
@@ -278,6 +280,9 @@ Usd_ClipCache::GetUsedLayers() const
         }
     }
 
+    if (_concurrentPopulationContext) {
+        _concurrentPopulationContext->_mutex.unlock();
+    }
     return layers;
 }
 
@@ -341,11 +346,14 @@ const std::vector<Usd_ClipSetRefPtr>&
 Usd_ClipCache::GetClipsForPrim(const SdfPath& path) const
 {
     TRACE_FUNCTION();
-    tbb::mutex::scoped_lock lock;
     if (_concurrentPopulationContext) {
-        lock.acquire(_concurrentPopulationContext->_mutex);
+        _concurrentPopulationContext->_mutex.lock();
     }
-    return _GetClipsForPrim_NoLock(path);
+    const std::vector<Usd_ClipSetRefPtr>& res = _GetClipsForPrim_NoLock(path);
+    if (_concurrentPopulationContext) {
+        _concurrentPopulationContext->_mutex.unlock();
+    }
+    return res;
 }
 
 const std::vector<Usd_ClipSetRefPtr>&
