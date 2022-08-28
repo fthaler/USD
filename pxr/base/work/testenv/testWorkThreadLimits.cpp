@@ -114,9 +114,9 @@ _TestArguments(const int envVal)
     WorkSetConcurrencyLimitArgument(3);
     TF_AXIOM(WorkGetConcurrencyLimit() == _ExpectedLimit(envVal, 3));
 
-    // n = 1000 means 1000
-    WorkSetConcurrencyLimitArgument(1000);
-    TF_AXIOM(WorkGetConcurrencyLimit() == _ExpectedLimit(envVal, 1000));
+    // n = 100 means 100
+    WorkSetConcurrencyLimitArgument(100);
+    TF_AXIOM(WorkGetConcurrencyLimit() == _ExpectedLimit(envVal, 100));
 
     // n = -1 means numCores - 1, with a minimum of 1
     WorkSetConcurrencyLimitArgument(-1);
@@ -242,12 +242,12 @@ main(int argc, char **argv)
         _ExpectedLimit(envVal, 4));
     _TestThreadLimit(envVal, 4);
 
-    // Test with 1000 threads.
-    std::cout << "Testing with 1000 threads...\n";
-    WorkSetConcurrencyLimit(1000);
+    // Test with 100 threads.
+    std::cout << "Testing with 100 threads...\n";
+    WorkSetConcurrencyLimit(100);
     TF_AXIOM(WorkGetConcurrencyLimit() ==
-        _ExpectedLimit(envVal, 1000));
-    _TestThreadLimit(envVal, 1000);
+        _ExpectedLimit(envVal, 100));
+    _TestThreadLimit(envVal, 100);
 
     // Test argument parsing
     std::cout << "Testing argument parsing...\n";
