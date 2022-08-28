@@ -5,10 +5,9 @@ pxr_library(work
     LIBRARIES
         tf
         trace
-        ${TBB_tbb_LIBRARY}
+        TBB::tbb
 
     INCLUDE_DIRS
-        ${TBB_INCLUDE_DIRS}
 
     PUBLIC_CLASSES
         detachedTask

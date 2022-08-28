@@ -14,10 +14,9 @@ pxr_library(hd
         cameraUtil
         hf
         pxOsd
-        ${TBB_tbb_LIBRARY}
+        TBB::tbb
 
     INCLUDE_DIRS
-        ${TBB_INCLUDE_DIRS}
 
     PUBLIC_CLASSES
         aov
