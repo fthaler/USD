@@ -34,7 +34,7 @@
 #include "pxr/base/tf/errorTransport.h"
 
 #include <tbb/concurrent_vector.h>
-#include <tbb/task.h>
+#include <tbb/task_group.h>
 
 #include <functional>
 #include <type_traits>
@@ -103,7 +103,7 @@ public:
 
     template <class Callable>
     inline void Run(Callable &&c) {
-        _rootTask->spawn(_MakeInvokerTask(std::forward<Callable>(c)));
+        _taskGroup.run(_MakeInvokerTask(std::forward<Callable>(c)));
     }
 
     template <class Callable, class A0, class ... Args>
@@ -137,31 +137,29 @@ private:
     // can transmit errors that occur back to the thread that Wait() s for tasks
     // to complete.
     template <class Fn>
-    struct _InvokerTask : public tbb::task {
+    struct _InvokerTask {
         explicit _InvokerTask(Fn &&fn, _ErrorTransports *err) 
             : _fn(std::move(fn)), _errors(err) {}
 
         explicit _InvokerTask(Fn const &fn, _ErrorTransports *err) 
             : _fn(fn), _errors(err) {}
 
-        virtual tbb::task* execute() {
+        void operator()() const {
             TfErrorMark m;
             _fn();
             if (!m.IsClean())
                 WorkDispatcher::_TransportErrors(m, _errors);
-            return NULL;
         }
     private:
-        Fn _fn;
+        mutable Fn _fn;
         _ErrorTransports *_errors;
     };
 
     // Make an _InvokerTask instance, letting the function template deduce Fn.
     template <class Fn>
-    _InvokerTask<typename std::remove_reference<Fn>::type>&
+    _InvokerTask<std::remove_const_t<std::remove_reference_t<Fn>>>
     _MakeInvokerTask(Fn &&fn) { 
-        return *new( _rootTask->allocate_additional_child_of(*_rootTask) )
-            _InvokerTask<typename std::remove_reference<Fn>::type>(
+        return _InvokerTask<std::remove_const_t<std::remove_reference_t<Fn>>>(
                 std::forward<Fn>(fn), &_errors);
     }
 
@@ -170,10 +168,8 @@ private:
     WORK_API static void
     _TransportErrors(const TfErrorMark &m, _ErrorTransports *errors);
 
-    // Task group context and associated root task that allows us to cancel
-    // tasks invoked directly by this dispatcher.
-    tbb::task_group_context _context;
-    tbb::empty_task* _rootTask;
+    // Task group
+    tbb::task_group _taskGroup;
 
     // The error transports we use to transmit errors in other threads back to
     // this thread.

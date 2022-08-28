@@ -383,7 +383,7 @@ _TestDispatcherCancellation(Graph *graph)
     DispatcherType parentDispatcher;
 
     parentDispatcher.Run(&_DelayedGraphTask<DispatcherType>, graph);
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::this_thread::sleep_for(std::chrono::seconds(3));
     std::cout << "\tCancelling..." << std::endl;
     parentDispatcher.Cancel();
     parentDispatcher.Wait();
