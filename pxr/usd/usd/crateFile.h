@@ -79,6 +79,13 @@ template <class T> struct _IsBitwiseReadWrite;
 
 enum class TypeEnum : int32_t;
 
+struct tbb_hash_hasher {
+    template <class T>
+    std::size_t operator()(const T& t) const {
+        return tbb_hasher(t);
+    }
+};
+
 // Value in file representation.  Consists of a 2 bytes of type information
 // (type enum value, array bit, and inlined-value bit) and 6 bytes of data.
 // If possible, we attempt to store certain values directly in the local
@@ -437,7 +444,7 @@ private:
         ArchMutableFileMapping _mapping;
         char *_start;
         int64_t _length;
-        tbb::concurrent_unordered_set<ZeroCopySource> _outstandingRanges;
+        tbb::concurrent_unordered_set<ZeroCopySource, tbb_hash_hasher> _outstandingRanges;
     };
     using _FileMappingIPtr = boost::intrusive_ptr<_FileMapping>;
 
