@@ -36,7 +36,7 @@ using namespace std;
 PXR_NAMESPACE_USING_DIRECTIVE
 
 static bool
-IsClose(double a, double b, double epsilon=1e-3)
+IsClose(double a, double b, double epsilon=1e-2)
 {
     auto diff = fabs(a-b);
     return diff <= epsilon * abs(a)
