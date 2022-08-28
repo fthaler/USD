@@ -33,6 +33,7 @@
 
 #include <atomic>
 #include <iterator>
+#include <memory>
 
 PXR_NAMESPACE_OPEN_SCOPE
 
@@ -111,7 +112,7 @@ public:
         while (curNode) {
             Node* nodeToDelete = curNode;
             curNode = curNode->next;
-            _alloc.destroy(nodeToDelete);
+            std::allocator_traits<decltype(_alloc)>::destroy(_alloc, nodeToDelete);
             _alloc.deallocate(nodeToDelete, 1);
         }
     }
@@ -130,7 +131,7 @@ public:
     /// the newly created item.
     iterator Insert() {
         Node* newNode = _alloc.allocate(1);
-        _alloc.construct(newNode);
+        std::allocator_traits<decltype(_alloc)>::construct(_alloc, newNode);
 
         // Add the node to the linked list in an atomic manner.
         do {
